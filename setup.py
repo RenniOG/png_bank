@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='png_bank',
-    version='0.1',
+    version='0.4',
     description='Password manager that fits into a png',
     license='MIT',
     author='Ryan Stewart',
@@ -15,7 +15,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'png_bank=png_bank.cli:run',  # Command to run the main script
+            'png=png_bank.cli:run',  # Command to run the main script
         ],
     },
 )

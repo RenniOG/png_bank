@@ -21,10 +21,8 @@ def get_pass_from_vault(vault):
     ser = get_ser(vault)
     items = []
     for i, pas in enumerate(vault[ser]):
-        if pas[0] == "":
-            items.append(f'{ser} {i}')
-            continue
         items.append(f'{i+1}: {pas[0]}')
+    # Ugly ass workaround bc formatting change and lazy
     return vault[ser][int(list_menu(items).split(':')[0])-1][1]
 
 

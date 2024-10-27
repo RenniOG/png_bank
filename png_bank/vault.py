@@ -39,6 +39,7 @@ class PBank:
     @classmethod
     def from_path(cls, path, password):
         itext = stega.extract_message(path, TERMINATOR)
+        print(itext)
         salt, name, cvalue, ptext = itext.split(B_CHAR[4])
         return cls(password, path, bytes.fromhex(salt), cls.dict_from_ptext(ptext), name=name, cvalue=cvalue)
 
@@ -50,14 +51,28 @@ class PBank:
             func = menus.list_menu(functions)
             match func:
                 case 'Find Password':
-                    print(self.get_pass())
+                    if not self.pass_dict:
+                        print("No Passwords Stored")
+                    else:
+                        print(self.get_pass())
                     input()
                 case 'Add Password':
-                    service = input("Website/Service: ").lower()
-                    user = input("Username: ")
-                    pw = getpass("Password: ")
+                    service = input("Website/Service: ").strip().lower()
+                    while service == "":
+                        service = input("Service name cannot be whitespace, please try again: ").strip().lower()
+                    user = input("Username: ").strip()
+                    if user == "":
+                        user = service
+                    pw = getpass("Password: ").strip()
+                    while pw == "":
+                        pw = getpass("You must enter a password, please try again (enter 'x' to go back): ").strip()
+                    if pw == "x":
+                        continue
                     self.add_pass(service, user, pw)
                 case 'Remove Password':
+                    if not self.pass_dict:
+                        input("No Passwords Stored")
+                        continue
                     self.remove_pass()
                 case 'Config':
                     # self.config_menu()

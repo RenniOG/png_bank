@@ -1,2 +1,2 @@
 [console_scripts]
-png_bank = png_bank.cli:run
+png = png_bank.cli:run
