@@ -101,6 +101,7 @@ class PBank:
             for np in np_arr:
                 nps.append(np[0] + B_CHAR[2] + np[1])
             final.append(f'{s}/{B_CHAR[3].join(nps)}')
+        print(B_CHAR[0].join(final))
         return B_CHAR[0].join(final)
 
     def init_key(self, password) -> bytes:
