@@ -13,9 +13,12 @@ import menus
 TERMINATOR = "ENDMESSAGEPNG"
 # Check Value
 CHECK_VALUE = "By all known laws of aviation..."
+# KILL ME
+BLANK_SPACE = " "
 # break characters
 B_CHAR = [';', '/', '>', '&', ':']
-NOT_ALLOWED = [CHECK_VALUE].extend(B_CHAR)
+NOT_ALLOWED = [CHECK_VALUE, TERMINATOR, BLANK_SPACE]
+NOT_ALLOWED.extend(B_CHAR)
 
 
 class PBank:
@@ -39,7 +42,6 @@ class PBank:
     @classmethod
     def from_path(cls, path, password):
         itext = stega.extract_message(path, TERMINATOR)
-        print(itext)
         salt, name, cvalue, ptext = itext.split(B_CHAR[4])
         return cls(password, path, bytes.fromhex(salt), cls.dict_from_ptext(ptext), name=name, cvalue=cvalue)
 
@@ -51,27 +53,33 @@ class PBank:
             func = menus.list_menu(functions)
             match func:
                 case 'Find Password':
-                    if not self.pass_dict:
-                        print("No Passwords Stored")
+                    if self.pass_dict is None:
+                        print("No passwords stored")
                     else:
                         print(self.get_pass())
                     input()
                 case 'Add Password':
                     service = input("Website/Service: ").strip().lower()
-                    while service == "":
-                        service = input("Service name cannot be whitespace, please try again: ").strip().lower()
+                    while service == "" or any(x in service for x in NOT_ALLOWED):
+                        if service == "":
+                            service = input("Service must be named: ").strip().lower()
+                        if any(x in service for x in NOT_ALLOWED):
+                            service = input(f"Service cannot include any of the following items: {NOT_ALLOWED} :: ").strip().lower()
                     user = input("Username: ").strip()
                     if user == "":
                         user = service
+                    while any(x in user for x in NOT_ALLOWED):
+                        user = input(
+                            f"Username cannot include any of the following items: {NOT_ALLOWED} :: ").strip().lower()
                     pw = getpass("Password: ").strip()
-                    while pw == "":
-                        pw = getpass("You must enter a password, please try again (enter 'x' to go back): ").strip()
+                    while pw == "" or " " in pw:
+                        pw = input("Password must be given (and can include no whitespace): (Type x to abort) ").strip()
                     if pw == "x":
                         continue
                     self.add_pass(service, user, pw)
                 case 'Remove Password':
-                    if not self.pass_dict:
-                        input("No Passwords Stored")
+                    if self.pass_dict is None:
+                        input("No passwords stored")
                         continue
                     self.remove_pass()
                 case 'Config':
@@ -90,6 +98,7 @@ class PBank:
         d_str = self.ptext_from_dict()
         c_enc = self.encrypt(CHECK_VALUE)
         o_str = B_CHAR[4].join([self.salt.hex(), self.name, c_enc, d_str])
+        print(o_str)
         stega.embed_message(self.loc, o_str, TERMINATOR)
 
     def ptext_from_dict(self) -> str:
@@ -101,7 +110,6 @@ class PBank:
             for np in np_arr:
                 nps.append(np[0] + B_CHAR[2] + np[1])
             final.append(f'{s}/{B_CHAR[3].join(nps)}')
-        print(B_CHAR[0].join(final))
         return B_CHAR[0].join(final)
 
     def init_key(self, password) -> bytes:

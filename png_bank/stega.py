@@ -59,9 +59,9 @@ def extract_message(path, terminator="ENDMESSAGEPNG"):
                     t_ind = message.find(terminator)
                     if t_ind != -1:
                         image.close()
+                        print(message)
                         return message[:t_ind]
                     cbyte = ''
-
 
 def import_image(path) -> Image:
     try:
