@@ -12,7 +12,7 @@ setup(
         'pyperclip',
         'Pillow',
         'cryptography',
-        'simple-terminal-menu',
+        'simple-term-menu',
     ],
     entry_points={
         'console_scripts': [
