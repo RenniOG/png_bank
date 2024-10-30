@@ -98,7 +98,6 @@ class PBank:
         d_str = self.ptext_from_dict()
         c_enc = self.encrypt(CHECK_VALUE)
         o_str = B_CHAR[4].join([self.salt.hex(), self.name, c_enc, d_str])
-        print(o_str)
         stega.embed_message(self.loc, o_str, TERMINATOR)
 
     def ptext_from_dict(self) -> str:
@@ -149,7 +148,6 @@ class PBank:
         # If password is incorrect, check value will not decrypt correctly, and will typically throw an error
         try:
             # If it doesn't raise an error, check it with the known check value to validate
-            print(self.decrypt(c_enc))
             if CHECK_VALUE != self.decrypt(c_enc):
                 raise ValueError()
         except ValueError as e:

@@ -4,7 +4,6 @@ from PIL import Image
 def embed_message(path, message, terminator="ENDMESSAGEPNG"):
     image = import_image(path)
     m_embed = message + terminator
-    # print(m_embed)
     width, height = image.size
     w = height * width * 3 / 8
     if len(m_embed) > w:
@@ -59,7 +58,6 @@ def extract_message(path, terminator="ENDMESSAGEPNG"):
                     t_ind = message.find(terminator)
                     if t_ind != -1:
                         image.close()
-                        print(message)
                         return message[:t_ind]
                     cbyte = ''
 

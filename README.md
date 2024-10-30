@@ -11,7 +11,7 @@
 * Create a python virtual environment
 ```python -m venv venv```
 * Activate the virtual environment (required file may vary based on shell)
-```source vemv/bin/activate```
+```source venv/bin/activate```
 * Install requirements
 ```pip install -r png_bank/requirements.txt```
 * Run program
@@ -19,5 +19,6 @@
 
 Furthermore, you can make this a command by adding the following command to your bashrc or equivalent file:
 ```alias command_name='source /path/to/directory/venv/bin/activate; python3 /path/to/directory/png_bank/png_bank/cli.py'```
+
 for example:
 ```alias pngv='source ~/pvault/venv/bin/activate; python3 ~/pvault/png_bank/png_bank/cli.py```
