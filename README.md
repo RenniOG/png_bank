@@ -20,4 +20,4 @@
 Furthermore, you can make this a command by adding the following command to your bashrc or equivalent file:
 ```alias command_name='source /path/to/directory/venv/bin/activate; python3 /path/to/directory/png_bank/png_bank/cli.py'```
 for example:
-```simpl```
+```alias pngv='source ~/pvault/venv/bin/activate; python3 ~/pvault/png_bank/png_bank/cli.py```
